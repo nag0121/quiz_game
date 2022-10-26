@@ -1,5 +1,5 @@
 import { PIView } from "../interfaces/PInterfaces";
-import { PQDisplay } from "../types/PTypes";
+import { PQDisplay, PTResponse } from "../types/PTypes";
 
 export default class extends Phaser.GameObjects.Container implements PIView {
 
@@ -16,9 +16,15 @@ export default class extends Phaser.GameObjects.Container implements PIView {
         // add text
         this.questionText = this.scene.add.text(0, 0, "", { 
             fontFamily: 'Georgia, "Goudy Bookletter 1911", Times, serif', 
-            fontSize : "24px",
+            fontSize : "28px",
+            fontStyle : "bold",
             stroke : "#000000",
-            strokeThickness : 2
+            strokeThickness : 3,
+            align : "center",
+            wordWrap : {
+                callback : this._wrapTHeWords,
+                callbackScope : this
+            }
         });
         this.questionText.setOrigin(0.5);
         this.add(this.questionText);
@@ -34,8 +40,13 @@ export default class extends Phaser.GameObjects.Container implements PIView {
     _addListeners(): void {
     }
 
-    _setQuestion (question : string) : void {
+    _refreshQuestion (question : string) : void {
         this.questionText?.setText(question);
+    }
+
+    _wrapTHeWords (text : string, textObj : Phaser.GameObjects.Text) {
+        let words = text.split("|");
+        return words;
     }
 
     

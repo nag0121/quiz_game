@@ -38,7 +38,11 @@ export default class extends Phaser.GameObjects.Container implements PIView {
         this.optionText.setOrigin(0.5);
         this.add(this.optionText);
 
-        console.log(" ==========> ", this)
+    }
+
+    _refreshOption (option : string) : void {
+        this.optionStr = option;
+        this.optionText?.setText(option);
     }
 
     _unload(): void {
@@ -54,7 +58,8 @@ export default class extends Phaser.GameObjects.Container implements PIView {
     }
 
     private _onTabDown () : void {
-        alert("tab down")
+        alert(`the option ${this.optionStr} is clicked`)
+        this.scene.events.emit("option_selected");
         // this._unload();
     }
 

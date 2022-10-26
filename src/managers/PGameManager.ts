@@ -9,6 +9,7 @@ export class PGameManager {
         this.scene = scene;
 
         this.scene.events.addListener("category_selected", this._onCategorySelected, this);
+        this.scene.events.addListener("option_selected", this._onOptionSelected, this);
     }
 
     _onCategorySelected (id : number, categoryName : string) : void {
@@ -28,5 +29,8 @@ export class PGameManager {
         this.scene.events.emit("start_quiz", resObj);
     }
 
+    _onOptionSelected(answer : string) : void {
+        // let correctAnswer = PCAnswers
+    }
     
 }

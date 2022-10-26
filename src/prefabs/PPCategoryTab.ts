@@ -59,8 +59,8 @@ export default class extends Phaser.GameObjects.Container implements PICategoryT
     }
 
     _resize(): void {
-        this.bg?.setScale(this.scene.scale.gameSize.aspectRatio);
-        this.setPosition(this.scene.scale.gameSize.width * 0.5, this.scene.scale.gameSize.height * 0.5);
+        // this.bg?.setScale(this.scene.scale.gameSize.aspectRatio);
+        // this.setPosition(this.scene.scale.gameSize.width * 0.5, this.scene.scale.gameSize.height * 0.5);
     }
 
     private _onTabDown () : void {

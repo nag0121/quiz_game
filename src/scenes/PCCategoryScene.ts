@@ -5,10 +5,14 @@ import { PGameManager } from "../managers/PGameManager";
 import { PTResponse } from "../types/PTypes";
 import PPQuestionDisplay from "../prefabs/PPQuestionDisplay";
 import PPOption from "../prefabs/PPOption";
+import PPOptionsContainer from "../prefabs/PPOptionsContainer";
 
 export default class extends Scene implements PIScene{
     bg : Phaser.GameObjects.Image | null
-    category_container : PPCategoryTab | null
+    categoryContainer : PPCategoryTab | null
+    questionContainer : PPQuestionDisplay | null
+    optionsContainer : PPOptionsContainer | null
+
     
     gameManager : PGameManager | null
     constructor () {
@@ -16,7 +20,9 @@ export default class extends Scene implements PIScene{
             key : "category_scene"
         })
         this.gameManager = null;
-        this.category_container = null;
+        this.categoryContainer = null;
+        this.questionContainer = null;
+        this.optionsContainer = null;
         this.bg = null;
     }
 
@@ -33,7 +39,7 @@ export default class extends Scene implements PIScene{
         // this.bg = this.add.image(this.scale.gameSize.width * 0.5, this.scale.gameSize.height * 0.5, "bg");
         // this.bg.setDisplaySize(this.scale.gameSize.width, this.scale.gameSize.height);
 
-        this.category_container = new PPCategoryTab({
+        this.categoryContainer = new PPCategoryTab({
             scene : this,
             id : 0,
             name : "sports",
@@ -55,37 +61,42 @@ export default class extends Scene implements PIScene{
     onStartQuiz (data : PTResponse) {
         console.log(data);
 
-        let questionDisplay = new PPQuestionDisplay({
-            scene : this,
-            position : {
-                x : this.scale.gameSize.width * 0.5,
-                y : this.scale.gameSize.height * 0.1
-            }, text : ""
-        });
-        questionDisplay._setQuestion(data.question);
-
-        let option = new PPOption({
-            scene : this,
-            position : {
-                x : this.scale.gameSize.width * 0.5,
-                y : this.scale.gameSize.height * 0.7
-            }, text : data.answer
-        })
+        // create question box
+        if (this.questionContainer) {
+        } else {
+            this.questionContainer = new PPQuestionDisplay({
+                scene : this,
+                position : {
+                    x : this.scale.gameSize.width * 0.5,
+                    y : this.scale.gameSize.height * 0.1
+                }, text : ""
+            });
+        }
+        // create options container
+        if (this.optionsContainer) {
+        } else {
+            this.optionsContainer = new PPOptionsContainer(this, {
+                x : this.scale.gameSize.width * 0.33,
+                y : this.scale.gameSize.height * 0.6
+            })
+        }
+        this.questionContainer._refreshQuestion(data.question);
+        this.optionsContainer._refreshOptions(data.options);
     }
 
     resize(gamesize:any, baseSize:any, displaySize:any, prevWidth:any, prevHeight:any ): void{
-        // // console.table([gamesize, baseSize, displaySize, prevWidth, prevHeight])
+        // console.table([gamesize, baseSize, displaySize, prevWidth, prevHeight])
         // console.log("==>", gamesize.width, prevWidth);
         // console.log("==>", baseSize.width, prevWidth);
         // console.log("==>", displaySize.width, prevWidth);
 
-        this.cameras.resize(gamesize.width, gamesize.height);
-        if (this.bg) {
-            this.bg.setDisplaySize(gamesize.width, gamesize.height);
-            this.bg.setPosition(gamesize.width * 0.5, gamesize.height * 0.5)
-        }
+        // this.cameras.resize(gamesize.width, gamesize.height);
+        // if (this.bg) {
+        //     this.bg.setDisplaySize(gamesize.width, gamesize.height);
+        //     this.bg.setPosition(gamesize.width * 0.5, gamesize.height * 0.5)
+        // }
 
-        this.category_container?._resize();
+        // this.categoryContainer?._resize();
     }
     
 }
